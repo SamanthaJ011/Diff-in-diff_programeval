@@ -1,0 +1,21 @@
+/* Analyzing impacts of a new garbage incinerator on property values using diff-in-diff analysis */
+
+use "\\hd.ad.syr.edu\03\a8b775\Documents\Downloads\spring 2020 statahomework.dta"
+
+regress rprice y12 if(nearinc==1), robust
+regress rprice nearinc if(year==2012), robust
+regress rprice nearinc if(year==2005), robust
+
+gen y12nearinc = y12*nearinc
+regress rprice y12 nearinc y12nearinc, robust
+
+/* According to the coefficient on the interaction term between the year 2012
+and being near the incinerator, housing prices fell an average of almost $12,700 dollars due to proximity to the incinerator. However, this coefficient is not statistically significant with a t-statistic of -1.37. This means that we cannot conclude that the incinerator had a significant effect on housing values within its proximity.*/
+
+regress rprice y12 nearinc y12nearinc age intst land area rooms baths, robust
+
+/* Adding controls for the age of the house, distance to the interstate, land area, house area, number of rooms, and number of baths brings the r-squared up from 0.1739 to 0.6403. The coefficient on y12*nearinc shows a decrease in housing prices near the
+incinerator after it was built, however the standard error is more than half the
+size of the coefficient, producing a t-statistic of -1.71. Therefore, the decrease
+is not statistically significant at the 95% confidence level and cannot be
+causally attributed to the construction of the incinerator. */
